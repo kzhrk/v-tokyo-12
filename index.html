@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
+    />
+
+    <title>Nuxt v3に備えて準備してStorybookで躓いた話</title>
+
+    <link rel="stylesheet" href="dist/reset.css" />
+    <link rel="stylesheet" href="dist/reveal.css" />
+    <link rel="stylesheet" href="dist/theme/black.css" id="theme" />
+    <link href="https://unpkg.com/tailwindcss@^2/dist/tailwind.min.css" rel="stylesheet">
+
+    <!-- Theme used for syntax highlighted code -->
+    <link
+      rel="stylesheet"
+      href="plugin/highlight/monokai.css"
+      id="highlight-theme"
+    />
+    <script src="./js/analytics.js" defer></script>
+    <style type="text/css">
+      .reveal h1,
+      .reveal h2,
+      .reveal h3,
+      .reveal h4,
+      .reveal h5,
+      .reveal h6 {
+        text-transform: none;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="reveal">
+      <div class="slides">
+        <section>
+          <h2>Nuxt v3に備えて準備してStorybookで躓いた話</h2>
+          <p>
+            <time datetime="2020-12-08">2020-12-08</time> | v-tokyo#12
+          </p>
+        </section>
+        <section class="profile">
+          <div class="flex">
+            <figure class="w-1/4">
+              <img src="https://avatars1.githubusercontent.com/u/548508?s=400&v=4" alt="">
+            </figure>
+            <div class="ml-8 text-left">
+              <h3>小林　和弘</h3>
+              <p>Frontend Engineer @ MedPeer</p>
+              <ul class="mt-8">
+                <li>
+                  <figure class="flex align-center">
+                    <img class="w-12" src="img/icon_github.png" alt="GitHubアイコン">
+                    <figcaption>
+                      <a href="https://github.com/kzhrk" target="_blank">@kzhrk</a>
+                    </figcaption>
+                  </figure>       
+                </li>
+                <li class="mt-4">
+                  <figure class="flex align-center">
+                    <img class="w-12" src="img/icon_twitter.svg" alt="Twitterアイコン">
+                    <figcaption>
+                      <a href="https://twitter.com/kzhrk0430" target="_blank">@kzhrk0430</a>
+                    </figcaption>
+                  </figure>       
+                </li>
+              </ul>
+            </div>
+          </div>
+          <style>
+            .profile {
+              font-size: 2rem;
+            }
+            .profile ul {
+              margin-left: 0;
+            }
+            .profile li {
+              list-style: none;
+            }
+            .profile img {
+              margin: 0 2rem 0 0;
+            }
+          </style>
+        </section>
+        <section class="kakari-for-clinic" data-background-transition="slide" data-background="img/kakari_for_clinic.png" data-background-color="#fff">
+          <div class="inner h-full align-center">
+            <h3>kakari for Clinic</h3>
+            <p class="flex justify-center">
+              <img src="./img/qr_kakari_for_clinic.png" alt="QRコード: https://kakari-for-clinic.jp/" width="200">
+            </p>
+          </div>
+          <style>
+            .kakari-for-clinic .inner {
+              background-color: rgba(255,255,255,.7);
+            }
+          </style>
+        </section>
+        <section class="kakari-structure">
+          <h3>kakari for Clnicの構成</h3>
+          <div class="bg-white p-4">
+            <img src="./img/kakari_structure.png" alt="kakari for Clinicの構成図">
+          </div>
+          <style></style>
+        </section>
+        <section>
+          <p>kakari for Clinic</p>
+          <p>[Release] 2020-09-28</p>
+        </section>
+        <section>
+          <p>そういえばRelease直前に何かあったな…</p>
+        </section>
+        <section class="vue3">
+          <h3>Vue3</h3>
+          <p>[Release] 2020-09-19</p>
+          <figure>
+            <img src="./img/vue3_release.png" alt="ワンピースのロゴ">
+          </figure>
+        </section>
+        <section>
+          <h3>NuxtのVue3対応は？</h3>
+        </section>
+        <section data-background="">
+          <p>
+            <img src="./img/issue_nuxt3.png" alt="Nuxt Vue 3 Support">
+            <a href="https://github.com/nuxt/nuxt.js/issues/5708" target="_blank">https://github.com/nuxt/nuxt.js/issues/5708</a>
+          </p>
+        </section>
+        <section class="composition-api">
+          <h3>Nuxt v3に備えて<br />composition-api対応したい🤔</h3>
+          <style></style>
+        </section>
+        <section class="atomic-design" data-background="./img/atomic_storybook.png" data-background-repeat="right" data-background-color="#fff">
+          <div class="bg-white bg-opacity-70 p-4 fragment fade-in shadow-2xl">
+            <h3 class="">Atomic Design + Storybook</h3>
+            <ol>
+              <li class="fragment fade-in">composition-apiインストール</li>
+              <li class="fragment fade-in">単純なatomsコンポーネントをcomposition-api対応</li>
+              <li class="fragment fade-in">複雑なorganismsコンポーネントをcomposition-api対応</li>
+            </ol>  
+          </div>
+          <style>
+            .atomic-design ol {
+              font-size: 2rem;
+              line-height: 3.5rem;
+            }
+          </style>
+        </section>
+        <section>
+          <h3>composition-apiのインストール</h3>
+          <pre><code data-trim data-noescape>
+            $ yarn add @vue/composition-api
+          </code></pre>
+        </section>
+        <section>
+          <h3>.storybook/preview.js</h3>
+          <pre><code data-trim data-noescape>
+          import Vue from 'vue';
+          import CompositionApi from '@vue/composition-api';
+          Vue.use(CompositionApi);
+          </code></pre>
+        </section>
+        <section>
+          <h3>atoms/Button.vueを置き換えてみる</h3>
+          <p>31 changes: 18 additions & 13 deletions</p>
+          <img src="./img/atoms_button.png" alt="components/atoms/Button.vueのdiff">
+        </section>
+        <section>
+          <h3>🎉Storybookで動作確認できた🎉</h3>
+          <figure>
+            <img src="./img/storybook_button.png" alt="">
+          </figure>
+        </section>
+        <section>
+          <h3>organismsを置き換えてみる</h3>
+          <p>209changed: 120 additions & 89 deletions</p>
+          <img src="./img/organisms_draggable.png" alt="components/organisms/clinic/DraggableList.vueのdiff">
+        </section>
+        <section data-background="">
+          <h3>😇Storybookでエラー表示😇</h3>
+          <figure><img src="./img/storybook_error.png" alt=""></figure>
+        </section>
+        <section>
+          <h3>エラーログを読む</h3>
+          <pre><code data-trim data-noescape>
+            Cannot read property 'state' of undefined
+
+            TypeError: Cannot read property 'state' of undefined
+          </code></pre>
+        </section>
+        <section>
+          <h3>console.log</h3>
+          <p>root.$storeが参照できていない</p>
+          <pre><code data-trim data-noescape>
+            export default defineComponent({
+              setup(props, { root }) {
+                console.log(root.$store); // undefined
+          </code>
+        </section>
+        <section>
+          <h3>vuex v4に書き換える？</h3>
+          <ul>
+            <li class="fragment fade-in">コストがかかる</li>
+            <li class="fragment fade-in">Nuxtで問題なく動作するか不明</li>
+            <li class="fragment fade-in">（当時は）まだbeta版</li>
+          </ul>
+        </section>
+        <section>
+          <h3>getCurrentInstance</h3>
+          <a href="https://v3.vuejs.org/api/composition-api.html#getcurrentinstance" target="_blank">https://v3.vuejs.org/api/composition-api.html#getcurrentinstance</a>
+          <pre><code data-trim data-noescape>
+            import {
+              defineComponent,
+              getCurrentInstance,
+            } from '@vue/composition-api';
+
+            export default defineComponent({
+              setup(props) {
+                const root = getCurrentInstance()!;
+              },
+            });
+          </code></pre>
+        </section>
+        <section data-background="">
+          <h3>🎉 Storybook復活 🎉</h3>
+          <figure><img src="./img/storybook_draggable.png" alt=""></figure>
+        </section>
+        <section>
+          <h3>まとめ</h3>
+          <ul>
+            <li>Nuxtにcomposition-apiは簡単に入れられる</li>
+            <li>Nuxt v3に備えてcomposition-api対応していきましょう</li>
+          </ul>
+        </section>
+        <section data-background="./img/issue_composition.png" data-background-color="#fff" data-background-size="contain">
+          <div class="bg-white bg-opacity-70 p-4">
+            <h3>最後に</h3>
+            <p>メドピアではVueを書きたい<br />フロントエンドエンジニア募集中</p>
+            <p class="flex justify-center"><a href="https://medpeer.co.jp/recruit/entry/entry21.html"><img src="./img/qr_recruit.png" alt="" width="200"></a></p>
+          </div>
+        </section>
+        <section>
+          <p>🙏ご清聴ありがとうございました🙏</p>
+        </section>
+      </div>
+    </div>
+
+    <script src="dist/reveal.js"></script>
+    <script src="plugin/notes/notes.js"></script>
+    <script src="plugin/markdown/markdown.js"></script>
+    <script src="plugin/highlight/highlight.js"></script>
+    <script>
+      // More info about initialization & config:
+      // - https://revealjs.com/initialization/
+      // - https://revealjs.com/config/
+      Reveal.initialize({
+        hash: true,
+
+        // Learn about plugins: https://revealjs.com/plugins/
+        plugins: [RevealMarkdown, RevealHighlight, RevealNotes],
+      });
+    </script>
+  </body>
+</html>
